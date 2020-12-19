@@ -3,6 +3,16 @@ import './App.css';
 
 import react from 'react';
 
+import NewGame from './views/newGame/main'
+
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
  
 
 class App extends react.Component {
@@ -41,15 +51,18 @@ class App extends react.Component {
 
   render(){
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-         {this.state.categories}
-        </p>
-        
-           
-      </header>
-    </div>
+   <Router>
+
+    <Switch>
+     <Route path="/new">
+        <NewGame id="app"></NewGame>
+     </Route>
+
+      
+
+     </Switch>
+
+   </Router>
   );
   }
 }

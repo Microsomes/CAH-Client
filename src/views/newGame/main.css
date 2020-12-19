@@ -1,0 +1,59 @@
+#newGameContainer{
+    border:1px solid black;
+     background-color: black;
+    border:20px solid #A48622;
+    height: 100vh;
+    display: flex;
+    flex-flow: column;
+ }
+
+#intro{
+    margin-top: 100px;
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    flex-grow: 1;
+}
+#intro h1{
+    color:white;
+    font-weight: bold;
+    font-family: 'Bungee Outline', cursive;
+    font-size: 100px;
+    text-align: center;
+}
+
+#intro p{
+    color:white;
+    font-weight: bold;
+     font-size: 20px;
+    text-align: center;
+    font-family: 'Bungee Outline', cursive;
+    font-family: 'Lato', sans-serif;
+}
+
+#second{
+    border:1px solid white;
+    height: 300px;;
+    background-color: yellow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ 
+}
+
+#second button{
+    margin-left:20px;
+    padding:20px;
+    border-radius: 20px;
+    border:none;
+    outline:none;
+    background:white;
+    cursor: pointer;
+    transition: all 2s;
+}
+
+#second button:hover{
+    transform: rotate(360deg);
+}
