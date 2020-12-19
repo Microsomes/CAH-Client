@@ -1,25 +1,57 @@
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import react from 'react';
+
+ 
+
+class App extends react.Component {
+  
+
+  constructor(props){
+    super(props)
+    this.state={
+      categories:[]
+    }
+  }
+
+  componentDidMount() { 
+    //establish connection to socket
+
+  // client-side
+      const io = require("socket.io-client");
+      const socket = io("192.168.0.20:3000", {
+        withCredentials: false,
+        extraHeaders: {
+          "my-custom-header": "abcd"
+        }
+      });
+
+      socket.on("init",(msg)=>{
+        this.setState({
+          categories:msg
+        })
+      })
+
+      
+
+      
+
+  }
+
+  render(){
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+         {this.state.categories}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        
+           
       </header>
     </div>
   );
+  }
 }
 
 export default App;
