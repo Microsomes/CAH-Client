@@ -13,6 +13,7 @@
     "socket.io-client": "^3.0.4",
     "web-vitals": "^0.2.4"
   },
+  "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

@@ -42,20 +42,24 @@ class App extends react.Component {
           categories:msg
         })
       })
-
-      
-
-      
+   
 
   }
+
+
+
+  sendMessageToSocket=()=>{
+    alert("sending message")
+  }
+
 
   render(){
   return (
    <Router>
 
     <Switch>
-     <Route path="/new">
-        <NewGame id="app"></NewGame>
+     <Route path="/">
+        <NewGame sendMessageToSocket={this.sendMessageToSocket} id="app"></NewGame>
      </Route>
 
       

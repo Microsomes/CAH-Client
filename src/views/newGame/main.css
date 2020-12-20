@@ -1,7 +1,18 @@
+
+#newGamePopUp{
+    position: fixed;
+    height:100%;
+    width: 100%;
+    background:black;
+    z-index: 2;
+    color:white;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
 #newGameContainer{
     border:1px solid black;
      background-color: black;
-    border:20px solid #A48622;
     height: 100vh;
     display: flex;
     flex-flow: column;
