@@ -31,7 +31,8 @@ class WaitingRoom extends React.Component {
 
           <div>
               <p>People Connected:</p>
-              
+
+               
           </div>
 
         <h1>Waiting room</h1>

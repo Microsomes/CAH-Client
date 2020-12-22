@@ -25,7 +25,8 @@ class App extends react.Component {
     super(props)
     this.state={
       categories:[],
-      roomData:null
+      roomData:null,
+      connectedUsers:123
     }
   }
 
@@ -69,6 +70,22 @@ class App extends react.Component {
 
       this.socket=socket;
 
+
+      socket.on("playerConnected",(msg)=>{
+
+        if(this.state.roomData==null){
+          //were not waiting so lets ignore the connected user
+        }else{
+          //update connection list
+          var roomID= this.state.roomData.roomID;
+          if(roomID== msg.roomID){
+            this.setState({
+              connectedUsers:msg.connectedUsers
+            })
+          }
+        }
+        console.log(msg)
+      })
  
       socket.on("joinRoomResponse",(msg)=>{
         if(msg.status=="ERR"){
@@ -108,7 +125,7 @@ class App extends react.Component {
     if(this.state.roomData==null){
       renderComp= <NewGame sendMessageToSocket={this.sendMessageToSocket} id="app"></NewGame>
     }else{
-      renderComp= <WaitingRoom roomData={this.state.roomData} ></WaitingRoom>
+      renderComp= <WaitingRoom connectedUsers={this.props.connectedUsers} roomData={this.state.roomData} ></WaitingRoom>
     }
 
   return (
