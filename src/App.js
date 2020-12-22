@@ -5,6 +5,9 @@ import react from 'react';
 
 import NewGame from './views/newGame/main'
 
+import WaitingRoom from './views/waiting/main'
+
+
 
 import {
   BrowserRouter as Router,
@@ -21,12 +24,39 @@ class App extends react.Component {
   constructor(props){
     super(props)
     this.state={
-      categories:[]
+      categories:[],
+      roomData:null
     }
   }
 
   componentDidMount() { 
     //establish connection to socket
+
+
+    //lets generate a rootid
+
+    let guid = () => {
+      let s4 = () => {
+          return Math.floor((1 + Math.random()) * 0x10000)
+              .toString(16)
+              .substring(1);
+      }
+      //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+  }
+
+    
+
+    if(localStorage.getItem("genid")==null){
+      var rid=guid()
+      localStorage.setItem("genid",rid)
+    }else{
+      var genid= localStorage.getItem("genid")
+
+      console.log(genid)
+    }
+
+
 
   // client-side
       const io = require("socket.io-client");
@@ -37,10 +67,20 @@ class App extends react.Component {
         }
       });
 
-      socket.on("init",(msg)=>{
-        this.setState({
-          categories:msg
-        })
+      this.socket=socket;
+
+ 
+      socket.on("joinRoomResponse",(msg)=>{
+        if(msg.status=="ERR"){
+          alert(msg.msg)
+        }
+      })
+
+      socket.on("roomCreated",(msg)=>{
+       this.setState({
+         roomData:msg
+       })
+ 
       })
    
 
@@ -48,20 +88,40 @@ class App extends react.Component {
 
 
 
-  sendMessageToSocket=()=>{
-    alert("sending message")
+  sendMessageToSocket=(msg)=>{
+    
+    if(msg.action=="JOINROOM"){
+      this.socket.emit("joinRoom",msg)
+    }
+
+    if(msg.action=="CREATEROOM"){
+    this.socket.emit("createRoom",msg)
+    }
   }
 
 
   render(){
+
+    //let
+    let renderComp=null
+
+    if(this.state.roomData==null){
+      renderComp= <NewGame sendMessageToSocket={this.sendMessageToSocket} id="app"></NewGame>
+    }else{
+      renderComp= <WaitingRoom roomData={this.state.roomData} ></WaitingRoom>
+    }
+
   return (
    <Router>
 
     <Switch>
-     <Route path="/">
-        <NewGame sendMessageToSocket={this.sendMessageToSocket} id="app"></NewGame>
-     </Route>
+   
 
+
+     <Route path="/">
+       
+        {renderComp}
+     </Route>
       
 
      </Switch>

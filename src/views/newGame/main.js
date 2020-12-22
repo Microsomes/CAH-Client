@@ -5,6 +5,7 @@ import "./main.css"
 //all components
 import NewGameView from './components/newGame/main'
 
+import JoinGame from './components/joinGame/main'
 
 class NewGame extends react.Component{
     constructor(props){
@@ -35,7 +36,7 @@ class NewGame extends react.Component{
                 popup=<div id="newGamePopUp"><NewGameView sendMessageToSocket={this.props.sendMessageToSocket} ></NewGameView></div>
             }else{
                 popup=<div id="newGamePopUp">
-                <h1>Join Gadme</h1>
+                <JoinGame sendMessageToSocket={this.props.sendMessageToSocket}></JoinGame>
             </div>
             }
        }
