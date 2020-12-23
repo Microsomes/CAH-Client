@@ -9,6 +9,9 @@ import WaitingRoom from "./views/waiting/main";
 
 import ConnectedWaiting from "./views/connectedWaiting/main";
 
+
+import VideoWatching from "./views/videoWatching/main"
+
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class App extends react.Component {
@@ -31,8 +34,12 @@ class App extends react.Component {
         value:"hello world"
       }],
 
-      waitingRoomTVTitle:"Waiting Room:"
-    };
+      waitingRoomTVTitle:"Waiting Room:",
+
+      tvWaiting:'main',
+      videoVal:'',
+      isPlaying:false,
+     };
   }
 
   componentDidMount() {
@@ -96,6 +103,26 @@ class App extends react.Component {
         if (this.state.roomData.roomID == msg.roomID) {
           var allMessages = this.state.waitingMessagesArr;
 
+
+          if(msg.data.msg[0]==">"){
+            var command= msg.data.msg.split(">");
+
+            if(command[1]=="video"){
+              this.setState({
+                tvWaiting:"video",
+                videoVal:command[2]
+              })
+            }else if(command[1]=="play"){
+              this.setState({
+                isPlaying:true
+              })
+            }else if(command[1]=="pause"){
+              this.setState({
+                isPlaying:false
+              })
+            }
+          }
+
           if(msg.data.msg[0]==":"){
             var command= msg.data.msg.split(":");
             if(command[1]=="bg"){
@@ -104,6 +131,14 @@ class App extends react.Component {
                 backgroundColor:val
               })
             }
+
+            if(command[1]=="main"){
+              this.setState({
+                tvWaiting:"main"
+              })
+            }
+
+            
           }
 
           allMessages.push({
@@ -212,15 +247,27 @@ class App extends react.Component {
         );
       }
     } else {
-      renderComp = (
-        <WaitingRoom
-        waitingRoomTVTitle={this.state.waitingRoomTVTitle}
-          waitingMessagesArr={this.state.waitingMessagesArr}
+
+      if(this.state.tvWaiting=="main"){
+        renderComp = (
+          <WaitingRoom
+          waitingRoomTVTitle={this.state.waitingRoomTVTitle}
+            waitingMessagesArr={this.state.waitingMessagesArr}
+            backgroundColor={this.state.backgroundColor}
+            connectedUsers={this.state.connectedUsers}
+            roomData={this.state.roomData}
+          ></WaitingRoom>
+        );
+      }else{
+        renderComp=(
+          <VideoWatching
           backgroundColor={this.state.backgroundColor}
-          connectedUsers={this.state.connectedUsers}
-          roomData={this.state.roomData}
-        ></WaitingRoom>
-      );
+          isPlaying={this.state.isPlaying}
+          videoVal={this.state.videoVal}
+          ></VideoWatching>
+        );
+      }
+       
     }
 
     return (
