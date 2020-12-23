@@ -51,10 +51,10 @@
 
 
 #waitingRoom{
-    animation-name: exbg;
+    /*animation-name: exbg;
   animation-duration: 10s;
   animation-iteration-count: infinite;
-
+*/
     border:1px solid black;
     height:100vh;
     background:black;
@@ -89,4 +89,22 @@
     font-size: 30px;
     font-family: 'Roboto';
     font-weight: bold;
+}
+
+#peopleConnectedCont{
+    position: fixed;
+    height: 1000px;
+    width: 600px;
+    background:transparent;
+    left:0;
+    top:0;
+    color:black;
+    padding:10px;
+    font-size: 40px;
+    overflow-y: hidden;
+}
+
+
+#connectedUserList h2{
+    margin-left: 20px;
 }

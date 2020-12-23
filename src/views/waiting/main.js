@@ -6,7 +6,7 @@ class WaitingRoom extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(props);
+ 
 
     var roomID = props.roomData.roomID;
 
@@ -26,14 +26,32 @@ class WaitingRoom extends React.Component {
   }
 
   render() {
+    const connectedUsers = this.props.connectedUsers
+
+    const connectedUsersList = connectedUsers.map((person) =>
+        <div id="connectedUserList">
+        <h2>{person.nickName}</h2>
+        </div>
+        );
+
+
+    const messages= this.props.waitingMessagesArr;
+
+    const messagesList= messages.map((messages)=>
+    <p> ({messages.senderData}) {messages.value}</p>
+    ); 
+
+
     return (
-      <div id="waitingRoom">
+      <div style={{backgroundColor:this.props.backgroundColor}}  id="waitingRoom">
 
-          <div>
+          <div  id="peopleConnectedCont">
               <p>People Connected:</p>
+              {connectedUsersList}
 
-               
-          </div>
+              ---------------------------
+              {messagesList}
+           </div>
 
         <h1>Waiting room</h1>
 
