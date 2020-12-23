@@ -30,6 +30,8 @@ class App extends react.Component {
       waitingMessagesArr: [{
         value:"hello world"
       }],
+
+      waitingRoomTVTitle:"Waiting Room:"
     };
   }
 
@@ -212,6 +214,7 @@ class App extends react.Component {
     } else {
       renderComp = (
         <WaitingRoom
+        waitingRoomTVTitle={this.state.waitingRoomTVTitle}
           waitingMessagesArr={this.state.waitingMessagesArr}
           backgroundColor={this.state.backgroundColor}
           connectedUsers={this.state.connectedUsers}

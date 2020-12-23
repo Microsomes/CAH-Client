@@ -53,7 +53,7 @@ class WaitingRoom extends React.Component {
               {messagesList}
            </div>
 
-        <h1>Waiting room</h1>
+        <h1>{this.props.waitingRoomTVTitle}</h1>
 
         <div id="roomCodeContainer">
             <p>{this.state.roomID}</p>

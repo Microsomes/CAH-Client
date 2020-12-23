@@ -53,6 +53,15 @@ class ConnectedCoponent extends React.Component{
         })
     }
 
+    sendPresetMessage= (msg)=>{
+        this.props.sendMessageToSocket({
+            action:"WAIITNGMESSAGE",
+            data:{
+                msg:msg
+            }
+        })
+    }
+
     render(){
 
 
@@ -62,6 +71,12 @@ class ConnectedCoponent extends React.Component{
         }}>{item}</button>
         );
 
+        var presetText= this.state.allPresetMessages.map((item)=>
+            <button onClick={(e)=>{
+                this.sendPresetMessage(item)
+            }}>{item}</button>
+        );
+
 
         return (
             <div id="mainCont">
@@ -69,10 +84,13 @@ class ConnectedCoponent extends React.Component{
 
                 <h2>Connected to room id: {this.props.connectedRoom}</h2>
 
-                <input onKeyUp={this.sendMessage} onChange={this.handleWaitingMessage} value={this.state.waitingMessage} type="text" placeholder="enter a message"></input>
+                <input onClick={(e)=>{
+
+                }} onKeyUp={this.sendMessage} onChange={this.handleWaitingMessage} value={this.state.waitingMessage} type="text" placeholder="enter a message"></input>
 
                 <div>
                     <p>Send -Preset messages</p>
+                    {presetText}
                 </div>
 
                 <div id="changeColorContainer">
