@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 
-import react from "react";
+import react,{useState} from "react";
 
 import NewGame from "./views/newGame/main";
 
@@ -14,11 +14,17 @@ import VideoWatching from "./views/videoWatching/main"
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+
+
+//hook example
+
+ import Example from './hooks/Example/main'
+
 class App extends react.Component {
   constructor(props) {
     super(props);
     this.state = {
-      backgroundColor:'black',
+      backgroundColor: 'black',
       categories: [],
       roomData: null,
       connectedUsers: [
@@ -31,15 +37,15 @@ class App extends react.Component {
       connectedRoom: null,
 
       waitingMessagesArr: [{
-        value:"hello world"
+        value: "hello world"
       }],
 
-      waitingRoomTVTitle:"Waiting Room:",
+      waitingRoomTVTitle: "Waiting Room:",
 
-      tvWaiting:'main',
-      videoVal:'',
-      isPlaying:false,
-     };
+      tvWaiting: 'main',
+      videoVal: '',
+      isPlaying: false,
+    };
   }
 
   componentDidMount() {
@@ -81,7 +87,7 @@ class App extends react.Component {
 
     // client-side
     const io = require("socket.io-client");
-    const socket = io("192.168.0.20:3000", {
+    const socket = io("192.168.0.31:3001", {
       withCredentials: false,
       extraHeaders: {
         "my-custom-header": "abcd",
@@ -91,7 +97,7 @@ class App extends react.Component {
     this.socket = socket;
 
     socket.on("WAITINGMESSAGEres", (msg) => {
- 
+
 
       if (this.state.roomData == undefined) {
         console.log("messenger");
@@ -104,47 +110,47 @@ class App extends react.Component {
           var allMessages = this.state.waitingMessagesArr;
 
 
-          if(msg.data.msg[0]==">"){
-            var command= msg.data.msg.split(">");
+          if (msg.data.msg[0] == ">") {
+            var command = msg.data.msg.split(">");
 
-            if(command[1]=="video"){
+            if (command[1] == "video") {
               this.setState({
-                tvWaiting:"video",
-                videoVal:command[2]
+                tvWaiting: "video",
+                videoVal: command[2]
               })
-            }else if(command[1]=="play"){
+            } else if (command[1] == "play") {
               this.setState({
-                isPlaying:true
+                isPlaying: true
               })
-            }else if(command[1]=="pause"){
+            } else if (command[1] == "pause") {
               this.setState({
-                isPlaying:false
+                isPlaying: false
               })
             }
           }
 
-          if(msg.data.msg[0]==":"){
-            var command= msg.data.msg.split(":");
-            if(command[1]=="bg"){
-              var val= command[2];
+          if (msg.data.msg[0] == ":") {
+            var command = msg.data.msg.split(":");
+            if (command[1] == "bg") {
+              var val = command[2];
               this.setState({
-                backgroundColor:val
+                backgroundColor: val
               })
             }
 
-            if(command[1]=="main"){
+            if (command[1] == "main") {
               this.setState({
-                tvWaiting:"main"
+                tvWaiting: "main"
               })
             }
 
-            
+
           }
 
           allMessages.push({
             value: msg.data.msg,
             data: msg,
-            senderData:msg.senderData.playerData.nickName
+            senderData: msg.senderData.playerData.nickName
           });
 
           this.setState({
@@ -226,6 +232,8 @@ class App extends react.Component {
     }
   };
 
+
+
   render() {
     //let
     let renderComp = null;
@@ -234,40 +242,43 @@ class App extends react.Component {
       if (this.state.isConnected) {
         renderComp = (
           <ConnectedWaiting
-             connectedRoom={this.state.connectedRoom}
+            connectedRoom={this.state.connectedRoom}
             sendMessageToSocket={this.sendMessageToSocket}
           ></ConnectedWaiting>
         );
       } else {
         renderComp = (
+          <div>
+            <Example></Example>
           <NewGame
             sendMessageToSocket={this.sendMessageToSocket}
             id="app"
           ></NewGame>
+          </div>
         );
       }
     } else {
 
-      if(this.state.tvWaiting=="main"){
+      if (this.state.tvWaiting == "main") {
         renderComp = (
           <WaitingRoom
-          waitingRoomTVTitle={this.state.waitingRoomTVTitle}
+            waitingRoomTVTitle={this.state.waitingRoomTVTitle}
             waitingMessagesArr={this.state.waitingMessagesArr}
             backgroundColor={this.state.backgroundColor}
             connectedUsers={this.state.connectedUsers}
             roomData={this.state.roomData}
           ></WaitingRoom>
         );
-      }else{
-        renderComp=(
+      } else {
+        renderComp = (
           <VideoWatching
-          backgroundColor={this.state.backgroundColor}
-          isPlaying={this.state.isPlaying}
-          videoVal={this.state.videoVal}
+            backgroundColor={this.state.backgroundColor}
+            isPlaying={this.state.isPlaying}
+            videoVal={this.state.videoVal}
           ></VideoWatching>
         );
       }
-       
+
     }
 
     return (
