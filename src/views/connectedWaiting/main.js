@@ -20,6 +20,18 @@ class ConnectedCoponent extends React.Component{
                 "COMMMON",
                 "IM WAITING BRUHHHH",
                 "FUCKING BEGIN"
+            ],
+            videos:[
+                {
+                    name:"Pause"
+                },
+                {
+                    name:"Play"
+                },
+               {
+                   name:"intro",
+                   link:"https://www.youtube.com/watch?v=VlSUyM_mIUw"
+               }
             ]
         }
     }
@@ -62,6 +74,44 @@ class ConnectedCoponent extends React.Component{
         })
     }
 
+    sendVideoTo= (msg)=>{
+
+        if(msg.name=="Play"){
+             this.props.sendMessageToSocket({
+                action:"WAIITNGMESSAGE",
+                data:{
+                    msg:">play"
+                }
+            })
+            return;
+        }
+
+        if(msg.name=="Pause"){
+            this.props.sendMessageToSocket({
+                action:"WAIITNGMESSAGE",
+                data:{
+                    msg:">pause"
+                }
+            })
+            return ;
+        }
+        this.props.sendMessageToSocket({
+            action:"WAIITNGMESSAGE",
+            data:{
+                msg:">video>"+msg.link
+            }
+        })
+
+        setTimeout(()=>{
+            this.props.sendMessageToSocket({
+                action:"WAIITNGMESSAGE",
+                data:{
+                    msg:">play"
+                }
+            })
+        },1000)
+    }
+
     render(){
 
 
@@ -78,11 +128,24 @@ class ConnectedCoponent extends React.Component{
         );
 
 
+        var allVideos= this.state.videos.map((item,index)=>{
+            return <button onClick={(e)=>{
+                this.sendVideoTo(item)
+            }} key={item.name}>
+                {item.name}
+            </button>
+        });
+
         return (
             <div id="mainCont">
                 <h1>Connected waiting for game to begin</h1>
 
                 <h2>Connected to room id: {this.props.connectedRoom}</h2>
+
+                <div>
+                    {allVideos}
+                </div>
+ 
 
                 <input onClick={(e)=>{
 
